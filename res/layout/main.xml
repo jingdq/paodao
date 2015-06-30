@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+
+<!--android:id="@+id/fl_content"-->
+<!--android:layout_width="fill_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:orientation="vertical"-->
+<!-->-->
+
+<!--
+<TextView android:layout_width="100dp"
+
+          android:layout_height="wrap_content"
+          android:textColor="@android:color/white"
+          android:ellipsize="marquee"
+          android:singleLine="true"
+          android:clickable="true"
+          android:focusable="true"
+          android:marqueeRepeatLimit="marquee_forever"
+          android:focusableInTouchMode="true"
+          android:scrollHorizontally="true"
+          android:text="这才是真正的文字跑马灯效果"
+        >
+</TextView>-->
+
+<!-- <com.example.paodao.MarqueeText
+         android:layout_below="@+id/textview1"
+         android:layout_marginTop="10dp"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:singleLine="true"
+         android:ellipsize="marquee"
+         android:focusable="true"
+         android:focusableInTouchMode="true"
+         android:text="跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯" />-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="400dp"
+              android:gravity="center"
+              android:layout_height="wrap_content"
+              android:background="#000"
+              android:id="@+id/ll_content">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="6秒前"
+            android:id="@+id/tv_time"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="奔腾岁月"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#ff0000"
+            android:id="@+id/tv_sender"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="（北京）"
+            android:textColor="#ffffff"
+            android:id="@+id/tv_senderLocation"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="送给"
+            android:textColor="#ffffff"
+            />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="七号呆瓜"
+            android:textSize="18sp"
+            android:textColor="#00ff00"
+            android:id="@+id/tv_receiver"/>
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:singleLine="true"-->
+    <!--android:text="（北京）"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:id="@+id/tv_receiverLocation"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:singleLine="true"-->
+    <!--android:text="9朵花"-->
+    <!--android:textColor="#ffffff"-->
+    <!--/>-->
+
+</LinearLayout>
+
+        <!-- <Button
+
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                 android:layout_gravity="top|right"
+                 android:background="@drawable/find_filter_arrow"
+                 android:id="@+id/button"/>-->
+
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#000"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/ll_localcontent">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="6秒前"-->
+        <!--android:id="@+id/tv_time1"/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="奔腾岁月"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textColor="#ff0000"-->
+        <!--android:id="@+id/tv_sender1"/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="送给"-->
+        <!--android:textColor="#ffffff"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="七号呆瓜"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textColor="#00ff00"-->
+        <!--android:id="@+id/tv_receiver1"/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="9朵花"-->
+        <!--android:textColor="#ffffff"-->
+        <!--/>-->
+
+        <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
