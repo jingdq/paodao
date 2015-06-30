@@ -348,6 +348,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
             mParentView.removeView(childView);
             childView = null;
         }
+        mParentView.removeView(ll_content);
 
 
 

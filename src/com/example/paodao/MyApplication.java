@@ -40,6 +40,7 @@ public class MyApplication extends Application {
         public void removePaoDaoView(){
             if (paoDaoView !=null){
               paoDaoView.removeView();
+                paoDaoView = null;
             }
 
 

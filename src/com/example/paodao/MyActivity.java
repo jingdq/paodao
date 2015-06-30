@@ -58,7 +58,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener{
         srceenWidth = mDisplayMetrics.widthPixels;
 //        startAnimate();
 
-        ((MyApplication)getApplication()).addPaoDaoView();
+
 
         }
 
@@ -128,6 +128,13 @@ public class MyActivity extends BaseActivity implements View.OnClickListener{
 //
 //        valueAnimator.start();
 //    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((MyApplication)getApplication()).addPaoDaoView();
+    }
 
     @Override
     protected void onPause() {
