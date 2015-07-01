@@ -140,7 +140,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener{
     protected void onPause() {
         super.onPause();
 
-//        ((MyApplication)getApplication()).removePaoDaoView();
+        ((MyApplication)getApplication()).removePaoDaoView();
 
     }
 

@@ -41,6 +41,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
     ValueAnimator valueAnimator1;
 
+
+
     public enum MSGSTATE {
         AREA, LOCAL
     }
@@ -162,6 +164,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
         removeChildView();
         initView();
         if (valueAnimator1 != null) {
+            valueAnimator1.cancel();
+            valueAnimator1.removeAllListeners();
             valueAnimator1.end();
             valueAnimator1 = null;
 
@@ -182,6 +186,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
             return;
 
         if (valueAnimator != null) {
+            valueAnimator.cancel();
+            valueAnimator.removeAllListeners();
             valueAnimator.end();
             valueAnimator = null;
             removeChildView();
@@ -215,12 +221,6 @@ public class PaoDaoView extends View implements View.OnClickListener {
             @Override
             public void onAnimationEnd(Animator animator) {
                 Log.e("aaa", "onAnimationEnd");
-//                ll_content.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ll_content.setLeft(srceenWidth);
-//                    }
-//                });
 
                 ll_content.setLeft(srceenWidth / 2 - ll_content.getWidth() / 2);
 
@@ -245,6 +245,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
 
 //
+                                                if (null != ll_content)
                                                 ll_content.setTranslationX(x);
 
                                                 //3.0以下
@@ -319,11 +320,12 @@ public class PaoDaoView extends View implements View.OnClickListener {
                                                          .getAnimatedValue();
 
 
+                                                 if (null != ll_content)
                                                  ll_content.setTranslationX(x);
 //                                                ViewHelper.setTranslationX(ll_content, x);
 
                                                  //3.0以下
-                                                 Log.i("jingdq", "valueAnimator1 x : " + x + " width : " + ll_content.getWidth());
+//                                                 Log.i("jingdq", "valueAnimator1 x : " + x + " width : " + ll_content.getWidth());
 //                                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ll_content.getLayoutParams();
 //                                                params.leftMargin = (int) x;
 //                                                ll_content.setLayoutParams(params);
