@@ -10,7 +10,7 @@ import android.view.WindowManager;
  */
 public class MyApplication extends Application {
 
-    public static PaoDaoView paoDaoView;
+    public static PaoDaoWindow paoDaoView;
 
     @Override
     public void onCreate() {
@@ -30,7 +30,7 @@ public class MyApplication extends Application {
 
     public void addPaoDaoView(){
         if (paoDaoView == null){
-            paoDaoView = new PaoDaoView(this);
+            paoDaoView = new PaoDaoWindow(this);
 //            paoDaoView.startAreaAnimate();
 
 

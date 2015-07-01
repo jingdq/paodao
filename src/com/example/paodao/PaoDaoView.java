@@ -5,21 +5,22 @@ package com.example.paodao;
 
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
 import android.view.animation.*;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.PropertyValuesHolder;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
+
+import java.util.LinkedList;
 
 /**
  * Created by jingdongqi on 6/30/15.
@@ -34,13 +35,20 @@ public class PaoDaoView extends View implements View.OnClickListener {
     WindowManager.LayoutParams wl;
     TextView senderTv;
     TextView receiverTv;
+    TextView tv_senderLocation;
+    TextView tv_receiverLocation;
+    TextView tv_time;
+    TextView tv_flower;
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
 
     Context mContext;
 
     ValueAnimator valueAnimator;
 
     ValueAnimator valueAnimator1;
-
 
 
     public enum MSGSTATE {
@@ -57,10 +65,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
             } else if (this.currentState == MSGSTATE.AREA) {
                 areaAnimate();
             }
-
-
         }
-
 
     }
 
@@ -68,6 +73,98 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
 
     private ViewGroup mParentView;
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Constant.Notification_refreshBroadcatView)) {
+                Toast.makeText(mContext, "处理 Notification_refreshBroadcatView 广播", Toast.LENGTH_SHORT).show();
+                final int showType = intent.getIntExtra("show_type", -1);
+                if (showType == 1) {//全国
+//                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
+//                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
+//                        collectSlideModel(model, SlideManager.getInstance().showCacheQueueArrForLocal);
+//
+//
+//                        setUpAllSlide(showType);
+//
+//                        if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() >= 2) {
+//
+//
+//                        }
+//                        startAreaAnimate();
+//
+//
+//                    }
+                    setUpAllSlide(showType);
+                    startAreaAnimate();
+
+                } else if (showType == 0) {//本地
+//                    if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
+//
+//                        if (SlideManager.getInstance().showCacheQueueArrForLocal.size() >= 2) {
+//                            SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
+//                            collectSlideModel(model, SlideManager.getInstance().showCacheQueueArrForLocal);
+//                        }
+//
+//
+//                        setUpAllSlide(showType);
+//                        startLocalAnimate();
+//
+//
+//                    }
+
+                    setUpAllSlide(showType);
+                    startLocalAnimate();
+
+
+                }
+
+            }
+        }
+
+    };
+
+    private void setUpAllSlide(int showType) {
+
+        ll_content.removeAllViews();
+        mParentView.removeAllViews();
+        ll_content = null;
+
+        addNewView();
+        if (showType == 0) {//本地
+            tv_senderLocation.setVisibility(View.GONE);
+            tv_receiverLocation.setVisibility(View.GONE);
+
+        } else if (showType == 1) {//全国
+
+
+        }
+
+
+    }
+
+
+    private void setupSlide() {
+//        SlideModel model = SlideManager.getInstance().getCurrentShowmodel();
+
+
+    }
+
+
+    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
+        SlideManager.getInstance().addNewHistoryBroadcast(model);
+        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
+            SlideManager.getInstance().listCacheQueueArr.removeLast();
+        }
+
+        //TODO 下拉内容的处理
+
+        arr.remove(model);
+
+
+    }
 
     public PaoDaoView(Context context) {
         this(context, null);
@@ -82,11 +179,23 @@ public class PaoDaoView extends View implements View.OnClickListener {
         this.mContext = context;
         initWindowParam(context);
         initView();
+        addNewView();
+//        startLocalAnimate();
 
-        addNew(mContext);
-        startLocalAnimate();
-        currentState = MSGSTATE.LOCAL;
+//        currentState = MSGSTATE.LOCAL;
+
+        registerBoradcastReceiver();
     }
+
+
+    public void registerBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(Constant.Notification_refreshBroadcatView);
+        //注册广播
+        mContext.registerReceiver(mBroadcastReceiver, myIntentFilter);
+
+    }
+
 
     private void initView() {
         mParentView = new FrameLayout(mContext);
@@ -98,7 +207,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
      * 增加全国数据
      * <p/>
      * 逻辑：如果当前视图中正在显示本地数据，则立即显示本条全国数据
-     *      如果当前试图中正在显示全国数据 ：分两种情况 1. 还没开始动画，则替换当前数据。2。已经开始动画，则停止动画，显示新的内容并且暂停一秒。
+     * 如果当前试图中正在显示全国数据 ：分两种情况 1. 还没开始动画，则替换当前数据。2。已经开始动画，则停止动画，显示新的内容并且暂停一秒。
      *
      * @param data
      */
@@ -120,10 +229,9 @@ public class PaoDaoView extends View implements View.OnClickListener {
     }
 
 
-    public void addNew(Context context) {
+    public void addNewView() {
 
-
-        addView = LayoutInflater.from(context).inflate(R.layout.main,
+        addView = LayoutInflater.from(mContext).inflate(R.layout.main,
                 null);
         ll_content = (LinearLayout) addView.findViewById(R.id.ll_content);
         senderTv = (TextView) addView.findViewById(R.id.tv_sender);
@@ -131,8 +239,15 @@ public class PaoDaoView extends View implements View.OnClickListener {
         receiverTv = (TextView) addView.findViewById(R.id.tv_receiver);
         receiverTv.setOnClickListener(this);
 
-        mParentView.addView(addView);
+        tv_senderLocation = (TextView) addView.findViewById(R.id.tv_senderLocation);
+        ;
+        tv_receiverLocation = (TextView) addView.findViewById(R.id.tv_receiverLocation);
+        ;
+        tv_time = (TextView) addView.findViewById(R.id.tv_time);
+        ;
+        tv_flower = (TextView) addView.findViewById(R.id.tv_flower);
 
+        mParentView.addView(addView);
 
 
     }
@@ -150,7 +265,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
         wl.x = 20;
         wl.y = 20;
         wl.width = WindowManager.LayoutParams.FILL_PARENT;
-        wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        wl.height = 100;
+//        wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wl.gravity = Gravity.TOP | Gravity.RIGHT;
     }
 
@@ -159,8 +275,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
      * 本地动画
      */
     public void localAnimate() {
-        if (currentState == MSGSTATE.LOCAL)
-            return;
+//        if (currentState == MSGSTATE.LOCAL)
+//            return;
         removeChildView();
         initView();
         if (valueAnimator1 != null) {
@@ -171,7 +287,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
         }
 
-        addNew(mContext);
+        addNewView();
         startLocalAnimate();
         currentState = MSGSTATE.LOCAL;
 
@@ -182,18 +298,21 @@ public class PaoDaoView extends View implements View.OnClickListener {
      */
     public void areaAnimate() {
 
-        if (currentState == MSGSTATE.AREA)
-            return;
+//        if (currentState == MSGSTATE.AREA)
+//            return;
+
+        removeChildView();
+        initView();
 
         if (valueAnimator != null) {
             valueAnimator.cancel();
             valueAnimator.removeAllListeners();
             valueAnimator.end();
             valueAnimator = null;
-            removeChildView();
+
         }
 
-        addNew(mContext);
+        addNewView();
         startAreaAnimate();
         currentState = MSGSTATE.AREA;
 
@@ -208,8 +327,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
         valueAnimator.setInterpolator(new LinearInterpolator());
 //        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+//        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+//        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
         valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -246,7 +365,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
 //
                                                 if (null != ll_content)
-                                                ll_content.setTranslationX(x);
+                                                    ll_content.setTranslationX(x);
 
                                                 //3.0以下
 
@@ -279,8 +398,8 @@ public class PaoDaoView extends View implements View.OnClickListener {
         valueAnimator1.setInterpolator(new LinearInterpolator());
 //        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        valueAnimator1.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator1.setRepeatMode(ValueAnimator.RESTART);
+//        valueAnimator1.setRepeatCount(ValueAnimator.INFINITE);
+//        valueAnimator1.setRepeatMode(ValueAnimator.RESTART);
         valueAnimator1.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -300,12 +419,11 @@ public class PaoDaoView extends View implements View.OnClickListener {
             @Override
             public void onAnimationRepeat(Animator animator) {
 
-                if (currentState == MSGSTATE.AREA){
+                if (currentState == MSGSTATE.AREA) {
                     animator.end();
                     animator.setStartDelay(1000);
                     animator.start();
-                }
-                else{
+                } else {
                     animator.end();
                 }
 
@@ -321,7 +439,7 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
 
                                                  if (null != ll_content)
-                                                 ll_content.setTranslationX(x);
+                                                     ll_content.setTranslationX(x);
 //                                                ViewHelper.setTranslationX(ll_content, x);
 
                                                  //3.0以下
@@ -345,14 +463,15 @@ public class PaoDaoView extends View implements View.OnClickListener {
 
 
     public void removeChildView() {
-        for (int i = 0;i<ll_content.getChildCount();i++){
-            View childView = ll_content.getChildAt(i);
-            mParentView.removeView(childView);
-            childView = null;
+        if (null != ll_content) {
+            for (int i = 0; i < ll_content.getChildCount(); i++) {
+                View childView = ll_content.getChildAt(i);
+                mParentView.removeView(childView);
+                childView = null;
+            }
+            mParentView.removeView(ll_content);
+            ll_content = null;
         }
-        mParentView.removeView(ll_content);
-        ll_content = null;
-
 
 
     }

@@ -3,22 +3,23 @@
                                 android:id="@+id/gl"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:background="#ff0000"
+              android:background="#fff"
               android:weightSum="4"
+              android:gravity="bottom"
               android:layout_height="match_parent">
 
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="全球动画"
-            android:id="@+id/button"/>
+    <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="全球动画"-->
+            <!--android:id="@+id/button"/>-->
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="本地动画"
-            android:id="@+id/button1"/>
+    <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="本地动画"-->
+            <!--android:id="@+id/button1"/>-->
 
     <Button
             android:layout_width="wrap_content"

@@ -38,22 +38,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="400dp"
-              android:gravity="center"
               android:layout_height="wrap_content"
-              android:background="#000"
+              android:background="#0000"
+              android:gravity="center_horizontal"
               android:id="@+id/ll_content">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="6秒前"
+            android:text=""
             android:id="@+id/tv_time"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="奔腾岁月"
+            android:text=""
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="#ff0000"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="（北京）"
+            android:text=""
             android:textColor="#ffffff"
             android:id="@+id/tv_senderLocation"/>
     <TextView
@@ -76,24 +76,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:text="七号呆瓜"
+            android:text=""
             android:textSize="18sp"
             android:textColor="#00ff00"
             android:id="@+id/tv_receiver"/>
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:singleLine="true"-->
-    <!--android:text="（北京）"-->
-    <!--android:textColor="#ffffff"-->
-    <!--android:id="@+id/tv_receiverLocation"/>-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:singleLine="true"-->
-    <!--android:text="9朵花"-->
-    <!--android:textColor="#ffffff"-->
-    <!--/>-->
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#ffffff"
+            android:id="@+id/tv_receiverLocation"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:id="@+id/tv_flower"
+            android:text=""
+            android:textColor="#ffffff"
+            />
 
 </LinearLayout>
 
