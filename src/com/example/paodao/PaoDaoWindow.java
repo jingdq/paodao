@@ -89,7 +89,6 @@ public class PaoDaoWindow implements View.OnClickListener {
     };
 
 
-
     private void setUpAllSlide(final int showType) {
 
 
@@ -101,90 +100,6 @@ public class PaoDaoWindow implements View.OnClickListener {
         addNewView();
 
         setupSlide(showType);
-
-        if (showType == 0) {//本地
-            tv_senderLocation.setVisibility(View.GONE);
-            tv_receiverLocation.setVisibility(View.GONE);
-            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(localOATime);
-            localOA.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
-                    SlideManager.getInstance().addNewHistoryBroadcast(model);
-                    addOrUpdateHistoryView();
-                    SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-
-                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
-                        showHistoryDataView();
-
-                    }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-
-                }
-            });
-            localOA.start();
-
-        } else if (showType == 1) {//全国
-            ObjectAnimator animator = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(areaOATime);
-            animator.setStartDelay(1000);
-            animator.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-
-
-                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
-                    SlideManager.getInstance().addNewHistoryBroadcast(model);
-                    addOrUpdateHistoryView();
-                    SlideManager.getInstance().showCacheQueueArrForGlobal.remove(model);
-                    Log.e("jingdq", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-
-
-                    if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
-                        if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
-                            Intent it = new Intent();
-                            it.setAction(Constant.Notification_refreshBroadcatView);
-                            it.putExtra("show_type", 0);
-                            mContext.sendBroadcast(it);
-                        } else {
-                            showHistoryDataView();
-
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-
-                }
-
-            });
-            animator.start();
-
-
-        }
 
 
     }
@@ -269,12 +184,95 @@ public class PaoDaoWindow implements View.OnClickListener {
         tv_flower.setText(model.getAmount() + "朵花");
 
 
-        if (showType == 1) {//全国
+        if (showType == 0) {//本地
+            tv_senderLocation.setVisibility(View.GONE);
+            tv_receiverLocation.setVisibility(View.GONE);
+            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(localOATime);
+            localOA.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
+                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
+                        SlideManager.getInstance().addNewHistoryBroadcast(model);
+                        addOrUpdateHistoryView();
+                        SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
+                    }
+
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+
+                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
+                        showHistoryDataView();
+
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            localOA.start();
+
+        } else if (showType == 1) {//全国
             tv_senderLocation.setText(model.getFromCity());
             tv_receiverLocation.setText(model.getToCity());
+            ObjectAnimator animator = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(areaOATime);
+            animator.setStartDelay(1000);
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                    if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() != 0) {
+                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
+                        SlideManager.getInstance().addNewHistoryBroadcast(model);
+                        addOrUpdateHistoryView();
+                        SlideManager.getInstance().showCacheQueueArrForGlobal.remove(model);
+                        Log.e("jingdq", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
+
+                    }
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
 
 
-        } else {
+                    if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
+                        if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
+                            Intent it = new Intent();
+                            it.setAction(Constant.Notification_refreshBroadcatView);
+                            it.putExtra("show_type", 0);
+                            mContext.sendBroadcast(it);
+                        } else {
+                            showHistoryDataView();
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+
+            });
+            animator.start();
+
 
         }
 
