@@ -49,7 +49,7 @@ public class SlideModel {
     }
 
     public int getAmount() {
-        return flower++;
+        return amount;
     }
 
     public void setAmount(int amount) {

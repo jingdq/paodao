@@ -64,6 +64,10 @@ public class PaoDaoWindow implements View.OnClickListener {
     private ListView historyListView;
 
     private FrameLayout.LayoutParams historyListViewParam;
+
+
+    private boolean isCanClearn = false;
+
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -76,7 +80,7 @@ public class PaoDaoWindow implements View.OnClickListener {
 //                        collectSlideModel(model, SlideManager.getInstance().showCacheQueueArrForLocal);
 
 
-                   setUpAllSlide(showType);
+                    setUpAllSlide(showType);
 
 
 //                    }
@@ -103,6 +107,8 @@ public class PaoDaoWindow implements View.OnClickListener {
 
 
     private void setUpAllSlide(final int showType) {
+
+
         ll_content.clearAnimation();
         ll_content.removeAllViews();
         mParentView.removeView(ll_content);
@@ -115,65 +121,180 @@ public class PaoDaoWindow implements View.OnClickListener {
         if (showType == 0) {//本地
             tv_senderLocation.setVisibility(View.GONE);
             tv_receiverLocation.setVisibility(View.GONE);
-            ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(6000).start();
+            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(6000);
+            localOA.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.getFirst();
+                    SlideManager.getInstance().addNewHistoryBroadcast(model);
+                    SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+
+                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
+                        showHistoryDataView();
+
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            localOA.start();
 
         } else if (showType == 1) {//全国
-            if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 1) {
-                ObjectAnimator animator = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(3000);
-                animator.setStartDelay(1000);
-                animator.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
+//            if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 1) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(3000);
+            animator.setStartDelay(1000);
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+
+                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.getFirst();
+                    SlideManager.getInstance().addNewHistoryBroadcast(model);
+                    SlideManager.getInstance().showCacheQueueArrForGlobal.remove(model);
+                    Log.e("jingdq", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+
+
+                    if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
+                        if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
+                            Intent it = new Intent();
+                            it.setAction(Constant.Notification_refreshBroadcatView);
+                            it.putExtra("show_type", 0);
+                            mContext.sendBroadcast(it);
+                        } else {
+                            showHistoryDataView();
+
+                        }
 
                     }
+                }
 
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                    }
+                @Override
+                public void onAnimationCancel(Animator animator) {
 
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
+                }
 
-                    }
+                @Override
+                public void onAnimationRepeat(Animator animator) {
 
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
+                }
 
-                    }
+            });
+            animator.start();
+//            }
 
-                });
-                animator.start();
-            } else if(SlideManager.getInstance().showCacheQueueArrForGlobal.size() > 1){
+//            else if(SlideManager.getInstance().showCacheQueueArrForGlobal.size() > 1){
+//
+//
+//                ObjectAnimator animator1 =   ObjectAnimator.ofFloat(ll_content,"alpha",1,0).setDuration(1000);
+//                animator1.addListener(new Animator.AnimatorListener() {
+//                    @Override
+//                    public void onAnimationStart(Animator animator) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animator animator) {
+//                        setUpAllSlide(showType);
+//                    }
+//
+//                    @Override
+//                    public void onAnimationCancel(Animator animator) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animator animator) {
+//
+//                    }
+//
+//                });
+//                animator1.start();
+//
+//
+//            }
 
 
-                ObjectAnimator animator1 =   ObjectAnimator.ofFloat(ll_content,"alpha",1,0).setDuration(1000);
-                animator1.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        setUpAllSlide(showType);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-
-                });
-                animator1.start();
+        }
 
 
-            }
+    }
 
+    private void showHistoryDataView() {
+
+        ll_content.clearAnimation();
+        ll_content.removeAllViews();
+        mParentView.removeView(ll_content);
+        ll_content = null;
+        addNewView();
+        SlideModel model = SlideManager.getInstance().listCacheQueueArr.getLast();
+        tv_time.setText(model.getShowTime());
+        senderTv.setText(model.getFromNickname());
+        receiverTv.setText(model.getToNickname());
+        tv_flower.setText(model.getAmount() + "朵花");
+
+
+        if (model.getShowType() == SlideModel.AEAR_SHOW_TYPE.GLOBAL_SHOW) {//全国
+            tv_senderLocation.setVisibility(View.VISIBLE);
+            tv_receiverLocation.setVisibility(View.VISIBLE);
+            tv_senderLocation.setText(model.getFromCity());
+            tv_receiverLocation.setText(model.getToCity());
+
+            ObjectAnimator areaOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(3000);
+            areaOA.setStartDelay(1000);
+            areaOA.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+                    animator.cancel();
+                    animator.setStartDelay(1000);
+                    animator.start();
+
+
+                }
+            });
+            areaOA.setRepeatCount(ValueAnimator.INFINITE);
+            areaOA.setRepeatMode(ValueAnimator.RESTART);
+            areaOA.start();
+
+        } else {
+            tv_senderLocation.setVisibility(View.GONE);
+            tv_receiverLocation.setVisibility(View.GONE);
+
+            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(6000);
+            localOA.setRepeatCount(ValueAnimator.INFINITE);
+            localOA.setRepeatMode(ValueAnimator.RESTART);
+            localOA.start();
 
         }
 
@@ -182,19 +303,25 @@ public class PaoDaoWindow implements View.OnClickListener {
 
 
     private void setupSlide(int showType) {
-        SlideModel model = SlideManager.getInstance().getCurrentShowmodel();
+        SlideModel model;
+        if (showType == 0) {
+            model = SlideManager.getInstance().showCacheQueueArrForLocal.getFirst();
+
+        } else {
+            model = SlideManager.getInstance().showCacheQueueArrForGlobal.getFirst();
+        }
         tv_time.setText(model.getShowTime());
         senderTv.setText(model.getFromNickname());
         receiverTv.setText(model.getToNickname());
         tv_flower.setText(model.getAmount() + "朵花");
 
-        SlideManager.getInstance().addNewHistoryBroadcast(model);
 
         if (showType == 1) {//全国
             tv_senderLocation.setText(model.getFromCity());
             tv_receiverLocation.setText(model.getToCity());
 
-        }else{
+
+        } else {
 
         }
 
@@ -324,7 +451,7 @@ public class PaoDaoWindow implements View.OnClickListener {
 
         mParentView.addView(addView);
 
-        addHistoryView();
+//        addHistoryView();
 
 //        mParentView.bringChildToFront(historyBt);
 
@@ -342,7 +469,7 @@ public class PaoDaoWindow implements View.OnClickListener {
         wl.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         wl.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         wl.x = 20;
-        wl.y = 20;
+        wl.y = 70;
         wl.width = WindowManager.LayoutParams.FILL_PARENT;
 //        wl.height = 100;
         wl.height = WindowManager.LayoutParams.WRAP_CONTENT;

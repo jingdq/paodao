@@ -117,4 +117,9 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 }
