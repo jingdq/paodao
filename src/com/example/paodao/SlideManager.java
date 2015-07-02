@@ -104,7 +104,14 @@ public class SlideManager {
 
 
     public void addNewHistoryBroadcast(SlideModel model) {
-        listCacheQueueArr.add(0,model);
+
+        if (listCacheQueueArr.contains(model))return;
+
+        while (listCacheQueueArr.size()>4){
+            listCacheQueueArr.remove(listCacheQueueArr.size()-1);
+        }
+
+            listCacheQueueArr.add(0,model);
     }
 
     public SlideModel getCurrentShowmodel() {
