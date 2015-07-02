@@ -180,9 +180,9 @@ public class SlideModel {
     public String showSlideStr() {
         String retVal = "";
         if (showType == AEAR_SHOW_TYPE.GLOBAL_SHOW) {
-            retVal = String.format("%s%s送给%s%d朵鲜花", getShowTime(), this.fromNickname, this.toNickname, this.amount);
+            retVal = String.format("%s%s%s送给%s%s %d朵鲜花", getShowTime(), this.fromNickname, this.fromCity, this.toNickname, this.toCity, this.amount);
         } else {
-            retVal = String.format("%s%s%s送给%s%s%d朵鲜花", getShowTime(), this.fromNickname, this.fromCity, this.toNickname, this.toCity, this.amount);
+            retVal = String.format("%s%s送给%s %d朵鲜花", getShowTime(), this.fromNickname, this.toNickname, this.amount);
 
         }
         return retVal;

@@ -36,6 +36,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout ll_content;
     Button bt2;//全球数据
     Button bt3;//本地数据
+    Button bt4;//button4
 
 
     @Override
@@ -45,8 +46,10 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.test);
         bt2 = (Button) findViewById(R.id.button2);
         bt3 = (Button) findViewById(R.id.button3);
+        bt4 = (Button) findViewById(R.id.button4);
         bt2.setOnClickListener(this);
         bt3.setOnClickListener(this);
+        bt4.setOnClickListener(this);
         DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
         getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
         srceenWidth = mDisplayMetrics.widthPixels;
@@ -90,6 +93,11 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
                 SlideManager.getInstance().addNewBroadcastBroadcastLocalForTest();
                 break;
 
+            case R.id.button4:
+                ((MyApplication)getApplication()).paoDaoView.addOrUpdateHistoryView();
+
+                break;
+
         }
 
 
@@ -106,14 +114,14 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
 
-        ((MyApplication) getApplication()).removePaoDaoView();
+//        ((MyApplication) getApplication()).removePaoDaoView();
 
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         ((MyApplication) getApplication()).removePaoDaoView();
+        super.onDestroy();
     }
 
 

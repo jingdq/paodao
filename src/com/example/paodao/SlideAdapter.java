@@ -15,11 +15,11 @@ import java.util.LinkedList;
  */
 public class SlideAdapter extends BaseAdapter {
 
-    private LinkedList<SlideModel> datas ;
+    private ArrayList<SlideModel> datas ;
     private Context mContext;
     private LayoutInflater inflater;
 
-    public SlideAdapter(Context mContext,LinkedList<SlideModel> datas) {
+    public SlideAdapter(Context mContext,ArrayList<SlideModel> datas) {
         this.datas = datas;
         this.mContext = mContext;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -153,18 +153,18 @@ public class PaoDaoView extends View implements View.OnClickListener {
     }
 
 
-    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
-        SlideManager.getInstance().addNewHistoryBroadcast(model);
-        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
-            SlideManager.getInstance().listCacheQueueArr.removeLast();
-        }
-
-        //TODO 下拉内容的处理
-
-        arr.remove(model);
-
-
-    }
+//    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
+//        SlideManager.getInstance().addNewHistoryBroadcast(model);
+//        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
+//            SlideManager.getInstance().listCacheQueueArr.removeLast();
+//        }
+//
+//        //TODO 下拉内容的处理
+//
+//        arr.remove(model);
+//
+//
+//    }
 
     public PaoDaoView(Context context) {
         this(context, null);

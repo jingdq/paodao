@@ -89,6 +89,7 @@ public class PaoDaoWindow implements View.OnClickListener {
     };
 
 
+
     private void setUpAllSlide(final int showType) {
 
 
@@ -108,8 +109,9 @@ public class PaoDaoWindow implements View.OnClickListener {
             localOA.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
-                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.getFirst();
+                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
                     SlideManager.getInstance().addNewHistoryBroadcast(model);
+                    addOrUpdateHistoryView();
                     SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
 
                 }
@@ -143,8 +145,9 @@ public class PaoDaoWindow implements View.OnClickListener {
                 public void onAnimationStart(Animator animator) {
 
 
-                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.getFirst();
+                    SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
                     SlideManager.getInstance().addNewHistoryBroadcast(model);
+                    addOrUpdateHistoryView();
                     SlideManager.getInstance().showCacheQueueArrForGlobal.remove(model);
                     Log.e("jingdq", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
                 }
@@ -193,7 +196,7 @@ public class PaoDaoWindow implements View.OnClickListener {
         mParentView.removeView(ll_content);
         ll_content = null;
         addNewView();
-        SlideModel model = SlideManager.getInstance().listCacheQueueArr.getLast();
+        SlideModel model = SlideManager.getInstance().listCacheQueueArr.get(0);
         tv_time.setText(model.getShowTime());
         senderTv.setText(model.getFromNickname());
         receiverTv.setText(model.getToNickname());
@@ -256,10 +259,9 @@ public class PaoDaoWindow implements View.OnClickListener {
 
         SlideModel model;
         if (showType == 0) {//本地
-            model = SlideManager.getInstance().showCacheQueueArrForLocal.getLast();
-
+            model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
         } else {//全国
-            model = SlideManager.getInstance().showCacheQueueArrForGlobal.getFirst();
+            model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
         }
         tv_time.setText(model.getShowTime());
         senderTv.setText(model.getFromNickname());
@@ -275,21 +277,6 @@ public class PaoDaoWindow implements View.OnClickListener {
         } else {
 
         }
-
-
-    }
-
-
-    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
-        SlideManager.getInstance().addNewHistoryBroadcast(model);
-        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
-            SlideManager.getInstance().listCacheQueueArr.removeLast();
-        }
-
-        //TODO 下拉内容的处理
-
-
-        arr.remove(model);
 
 
     }
@@ -316,7 +303,6 @@ public class PaoDaoWindow implements View.OnClickListener {
     private void initView() {
         mParentView = new FrameLayout(mContext);
         mParentView.setBackgroundColor(Color.GRAY);
-
         historyBt = new Button(mContext);
         historyBt.setText("MSG");
         historyBt.setWidth(20);
@@ -343,44 +329,19 @@ public class PaoDaoWindow implements View.OnClickListener {
         wm.addView(mParentView, wl);
     }
 
-    private void addHistoryView() {
+    public void addOrUpdateHistoryView() {
+
         if (historyListView == null) {
             historyListView = new ListView(mContext);
-            historyListView.setBackgroundColor(Color.BLUE);
+            historyListView.setBackgroundColor(Color.BLACK);
             historyListViewParam = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
             historyListViewParam.topMargin = ll_content == null ? 0 : ll_content.getBottom();
-            historyListView.setVisibility(View.GONE);
+//            historyListView.setVisibility(View.GONE);
             mParentView.addView(historyListView, historyListViewParam);
         }
 
         SlideAdapter adapter = new SlideAdapter(mContext, SlideManager.getInstance().listCacheQueueArr);
         historyListView.setAdapter(adapter);
-
-    }
-
-
-    /**
-     * 增加全国数据
-     * <p/>
-     * 逻辑：如果当前视图中正在显示本地数据，则立即显示本条全国数据
-     * 如果当前试图中正在显示全国数据 ：分两种情况 1. 还没开始动画，则替换当前数据。2。已经开始动画，则停止动画，显示新的内容并且暂停一秒。
-     *
-     * @param data
-     */
-    public void addNewAreaData(String data) {
-
-
-    }
-
-
-    /**
-     * 添加本地数据
-     * 逻辑：
-     * 如果当前正在显示全国数据，则等待当前的全国数据走场完毕，接着显示本地数据。
-     * 如果当前显示本地数据，则撤销正在显示的本地数据动画，开启新的本地数据动画。
-     */
-    public void addLocalAreaData() {
-
 
     }
 
@@ -414,17 +375,24 @@ public class PaoDaoWindow implements View.OnClickListener {
         DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
         wm.getDefaultDisplay().getMetrics(mDisplayMetrics);
         srceenWidth = mDisplayMetrics.widthPixels;
-
-
         wl = new WindowManager.LayoutParams();
         wl.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        wl.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         wl.x = 20;
-        wl.y = 70;
+        wl.y = 80;
         wl.width = WindowManager.LayoutParams.FILL_PARENT;
-//        wl.height = 100;
         wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wl.gravity = Gravity.TOP;
+//        wl.type = 2002;
+        wl.type = WindowManager.LayoutParams.TYPE_PHONE;
+//        wl.format=1;
+        /**
+         *这里的flags也很关键
+         *代码实际是wl.flags |= FLAG_NOT_FOCUSABLE;
+         *40的由来是wl的默认属性（32）+ FLAG_NOT_FOCUSABLE（8）
+         */
+//        wl.flags = 40;
+
+
     }
 
 

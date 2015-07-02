@@ -150,19 +150,19 @@ public class PaoDaoWindow1  {
 
     }
 
-
-    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
-        SlideManager.getInstance().addNewHistoryBroadcast(model);
-        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
-            SlideManager.getInstance().listCacheQueueArr.removeLast();
-        }
-
-        //TODO 下拉内容的处理
-
-        arr.remove(model);
-
-
-    }
+//
+//    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {
+//        SlideManager.getInstance().addNewHistoryBroadcast(model);
+//        if (SlideManager.getInstance().listCacheQueueArr.size() >= 6) {
+//            SlideManager.getInstance().listCacheQueueArr.removeLast();
+//        }
+//
+//        //TODO 下拉内容的处理
+//
+//        arr.remove(model);
+//
+//
+//    }
 
 
     public PaoDaoWindow1(Context context) {

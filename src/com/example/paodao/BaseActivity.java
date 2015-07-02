@@ -7,7 +7,6 @@ import android.os.Bundle;
  * Created by jingdongqi on 6/30/15.
  */
 public class BaseActivity extends Activity{
-    PaoDaoView paoDaoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +30,7 @@ public class BaseActivity extends Activity{
     @Override
     protected void onPause() {
         super.onPause();
+//        ((MyApplication) getApplication()).removePaoDaoView();
     }
 
     @Override

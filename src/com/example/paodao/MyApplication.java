@@ -15,6 +15,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        addPaoDaoView();
 
     }
 
@@ -31,7 +32,6 @@ public class MyApplication extends Application {
     public void addPaoDaoView(){
         if (paoDaoView == null){
             paoDaoView = new PaoDaoWindow(this);
-//            paoDaoView.startAreaAnimate();
 
 
         }}

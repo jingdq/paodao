@@ -11,9 +11,9 @@ import java.util.*;
  */
 public class SlideManager {
 
-    public static LinkedList<SlideModel> showCacheQueueArrForLocal;
-    public static LinkedList<SlideModel> showCacheQueueArrForGlobal;
-    public static LinkedList<SlideModel> listCacheQueueArr;
+    public static ArrayList<SlideModel> showCacheQueueArrForLocal;
+    public static ArrayList<SlideModel> showCacheQueueArrForGlobal;
+    public static ArrayList<SlideModel> listCacheQueueArr;
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
@@ -29,9 +29,9 @@ public class SlideManager {
     }
 
     private void initSlideData() {
-        showCacheQueueArrForLocal = new LinkedList<SlideModel>();
-        showCacheQueueArrForGlobal = new LinkedList<SlideModel>();
-        listCacheQueueArr = new LinkedList<SlideModel>();
+        showCacheQueueArrForLocal = new ArrayList<SlideModel>();
+        showCacheQueueArrForGlobal = new ArrayList<SlideModel>();
+        listCacheQueueArr = new ArrayList<SlideModel>();
 
 
     }
@@ -104,18 +104,18 @@ public class SlideManager {
 
 
     public void addNewHistoryBroadcast(SlideModel model) {
-        listCacheQueueArr.add(model);
+        listCacheQueueArr.add(0,model);
     }
 
     public SlideModel getCurrentShowmodel() {
         if (showCacheQueueArrForGlobal.size() != 0) {
-            return showCacheQueueArrForGlobal.getFirst();
+            return showCacheQueueArrForGlobal.get(0);
         }
         if (showCacheQueueArrForLocal.size() != 0) {
 
-            return showCacheQueueArrForLocal.getFirst();
+            return showCacheQueueArrForLocal.get(0);
         }
-        return listCacheQueueArr.getLast();
+        return listCacheQueueArr.get(listCacheQueueArr.size()-1);
     }
 
 
