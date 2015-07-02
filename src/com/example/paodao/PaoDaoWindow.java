@@ -174,7 +174,7 @@ public class PaoDaoWindow implements View.OnClickListener {
 
         SlideModel model;
         if (showType == 0) {//本地
-            model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
+            model = SlideManager.getInstance().showCacheQueueArrForLocal.get(SlideManager.getInstance().showCacheQueueArrForLocal.size()-1);
         } else {//全国
             model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
         }
@@ -191,12 +191,14 @@ public class PaoDaoWindow implements View.OnClickListener {
             localOA.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
-                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
-                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
-                        SlideManager.getInstance().addNewHistoryBroadcast(model);
-                        addOrUpdateHistoryView();
-                        SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
-                    }
+//                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
+//
+//                        Log.e("jingdq", "showCacheQueueArrForLocal.size() : " + SlideManager.getInstance().showCacheQueueArrForLocal.size());
+//                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
+//                        SlideManager.getInstance().addNewHistoryBroadcast(model);
+//                        addOrUpdateHistoryView();
+//                        SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
+//                    }
 
 
                 }
@@ -206,6 +208,23 @@ public class PaoDaoWindow implements View.OnClickListener {
 
                     if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
                         showHistoryDataView();
+
+                    } else {
+
+                        for (int i = 0; i < SlideManager.getInstance().showCacheQueueArrForLocal.size(); i++) {
+                            Log.e("jingdq", "showCacheQueueArrForLocal.size() : " + SlideManager.getInstance().showCacheQueueArrForLocal.size());
+                            SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(i);
+                            SlideManager.getInstance().addNewHistoryBroadcast(model);
+                            addOrUpdateHistoryView();
+                            SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
+
+                        }
+
+                        if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
+                            showHistoryDataView();
+
+                        }
+
 
                     }
                 }
