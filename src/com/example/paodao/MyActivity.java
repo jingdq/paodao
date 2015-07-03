@@ -1,28 +1,11 @@
 package com.example.paodao;
 
-import android.animation.ObjectAnimator;
 //import android.animation.PropertyValuesHolder;
 //import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.*;
-import com.nineoldandroids.animation.PropertyValuesHolder;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.animation.AnimatorProxy;
-
-import javax.xml.transform.Transformer;
+        import android.view.View;
+        import android.widget.*;
 
 public class MyActivity extends BaseActivity implements View.OnClickListener {
     /**
@@ -94,7 +77,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.button4:
-                ((MyApplication)getApplication()).paoDaoView.addOrUpdateHistoryView();
+                ((MyApplication)getApplication()).paoDaoView.updateHistoryView();
 
                 break;
 

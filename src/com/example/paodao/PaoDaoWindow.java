@@ -5,55 +5,54 @@ package com.example.paodao;
 
 //import android.animation.ObjectAnimator;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
-import android.view.animation.LinearInterpolator;
 import android.widget.*;
 import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.PropertyValuesHolder;
 import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
-
-import java.util.LinkedList;
 
 /**
  * Created by jingdongqi on 6/30/15.
  */
 public class PaoDaoWindow implements View.OnClickListener {
     private View addView;
-    int srceenWidth;
+    private int srceenWidth;
+    private LinearLayout ll_content;
+    private  Button button;
+    private WindowManager wm;
+    private WindowManager.LayoutParams wl;
+    private TextView senderTv;
+    private TextView receiverTv;
+    private TextView tv_senderLocation;
+    private TextView tv_receiverLocation;
+    private TextView tv_time;
+    private TextView tv_flower;
 
-    LinearLayout ll_content;
-    Button button;
-    WindowManager wm;
-    WindowManager.LayoutParams wl;
-    TextView senderTv;
-    TextView receiverTv;
-    TextView tv_senderLocation;
-    TextView tv_receiverLocation;
-    TextView tv_time;
-    TextView tv_flower;
+    private Button historyBt;
+    private ImageView historyIv;
 
-    Button historyBt;
+    private  boolean showDropDown = false;
+
+
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
     }
 
-    Context mContext;
+    private Context mContext;
 
     public enum MSGSTATE {
         AREA, LOCAL
     }
+
     private MSGSTATE currentState;
     private ViewGroup mParentView;
     private ListView historyListView;
@@ -129,9 +128,6 @@ public class PaoDaoWindow implements View.OnClickListener {
             ll_content.setGravity(Gravity.CENTER_HORIZONTAL);
 
 
-
-
-
             ObjectAnimator areaOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(areaOATime);
             areaOA.setStartDelay(1000);
             areaOA.addListener(new Animator.AnimatorListener() {
@@ -204,7 +200,6 @@ public class PaoDaoWindow implements View.OnClickListener {
         int width = ll_content.getMeasuredWidth();
 
 
-
         if (showType == 0) {//本地
             tv_senderLocation.setVisibility(View.GONE);
             tv_receiverLocation.setVisibility(View.GONE);
@@ -224,10 +219,10 @@ public class PaoDaoWindow implements View.OnClickListener {
                     } else {
 
                         for (int i = 0; i < SlideManager.getInstance().showCacheQueueArrForLocal.size(); i++) {
-                            Log.e("jingdq", "showCacheQueueArrForLocal.size() : " + SlideManager.getInstance().showCacheQueueArrForLocal.size());
+                            Log.e("aaa", "showCacheQueueArrForLocal.size() : " + SlideManager.getInstance().showCacheQueueArrForLocal.size());
                             SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(i);
                             SlideManager.getInstance().addNewHistoryBroadcast(model);
-                            addOrUpdateHistoryView();
+                            updateHistoryView();
                             SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
 
                         }
@@ -265,9 +260,9 @@ public class PaoDaoWindow implements View.OnClickListener {
                     if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() != 0) {
                         SlideModel model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
                         SlideManager.getInstance().addNewHistoryBroadcast(model);
-                        addOrUpdateHistoryView();
+                        updateHistoryView();
                         SlideManager.getInstance().showCacheQueueArrForGlobal.remove(model);
-                        Log.e("jingdq", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
+                        Log.e("aaa", ">>>>showCacheQueueArrForGlobal.size() " + SlideManager.getInstance().showCacheQueueArrForGlobal.size());
 
                     }
 
@@ -332,46 +327,39 @@ public class PaoDaoWindow implements View.OnClickListener {
     private void initView() {
         mParentView = new FrameLayout(mContext);
         mParentView.setBackgroundColor(Color.GRAY);
-        historyBt = new Button(mContext);
-        historyBt.setText("MSG");
-        historyBt.setWidth(20);
-        historyBt.setHeight(20);
-        historyBt.setBackgroundColor(Color.YELLOW);
-        historyBt.setOnClickListener(this);
-//        historyBt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                ListView listView = new ListView(mContext);
-//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 100);
-//                params.gravity=Gravity.BOTTOM;
-//                mParentView.addView(listView,params);
-//                ObjectAnimator.ofFloat(listView,"TranslationY",0,listView.getHeight()).setDuration(1000).start();
-//
-//            }
-//        });
+
+        historyIv = new ImageView(mContext);
+        historyIv.setMaxWidth(50);
+        historyIv.setMaxHeight(50);
+        historyIv.setBackgroundResource(R.drawable.find_filter_arrow);
+        historyIv.setOnClickListener(this);
+
+
+        historyListView = new ListView(mContext);
+        historyListView.setBackgroundColor(Color.BLACK);
+        historyListView.setVisibility(View.GONE);
+        mParentView.addView(historyListView);
 
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        params.topMargin=8;
+        params.rightMargin=8;
         params.gravity = Gravity.RIGHT;
-//        mParentView.addView(historyBt, params);
+        mParentView.addView(historyIv, params);
         wm.addView(mParentView, wl);
     }
 
-    public void addOrUpdateHistoryView() {
+    public void updateHistoryView() {
 
-        if (historyListView == null) {
-            historyListView = new ListView(mContext);
-            historyListView.setBackgroundColor(Color.BLACK);
-            historyListViewParam = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            historyListViewParam.topMargin = ll_content == null ? 0 : ll_content.getBottom();
-//            historyListView.setVisibility(View.GONE);
-            mParentView.addView(historyListView, historyListViewParam);
-//            ObjectAnimator.ofFloat(historyListView,"TranslationX",-srceenWidth,0).setDuration(1000).start();
+
+            historyListViewParam = (FrameLayout.LayoutParams) historyListView.getLayoutParams();
+        if (historyListViewParam.topMargin ==0){
+            historyListViewParam.topMargin = ll_content.getBottom();
+            historyListView.setLayoutParams(historyListViewParam);
+
         }
-
-        SlideAdapter adapter = new SlideAdapter(mContext, SlideManager.getInstance().listCacheQueueArr);
-        historyListView.setAdapter(adapter);
+            SlideAdapter adapter = new SlideAdapter(mContext, SlideManager.getInstance().listCacheQueueArr);
+            historyListView.setAdapter(adapter);
 
     }
 
@@ -450,18 +438,42 @@ public class PaoDaoWindow implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == historyBt) {
+        if (v == historyIv) {
 
-//            addHistoryView();
+            if (historyListView == null ) {
+                updateHistoryView();
+            }
+
 
             if (historyListView.getVisibility() == View.VISIBLE) {
-                historyListView.setVisibility(View.GONE);
+                showDropDown = false;
+                ObjectAnimator.ofFloat(v, "rotation", 180, 0).setDuration(500).start();
+//                ObjectAnimator o =  ObjectAnimator.ofFloat(historyListView, "TranslationY", historyListView.getBottom(), 0).setDuration(500);
+//                o.addListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        super.onAnimationEnd(animation);
+                        historyListView.setVisibility(View.GONE);
+//                    }
+//                });
+//
+//                o.start();
+
             } else {
-                historyListView.setVisibility(View.VISIBLE);
+                showDropDown = true;
+                ObjectAnimator.ofFloat(v, "rotation", 0, 180).setDuration(500).start();
+//                ObjectAnimator oa =ObjectAnimator.ofFloat(historyListView, "TranslationY", 0, historyListView.getBottom()).setDuration(500);
+//                oa.addListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        super.onAnimationEnd(animation);
+                        historyListView.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//                oa.start();
 
             }
 
-//            ObjectAnimator.ofFloat(listView,"TranslationY",0,listView.getHeight()).setDuration(1000).start();
 
             return;
         }

@@ -128,27 +128,27 @@ public class PaoDaoWindow1  {
 
         }
 
-        setupSlide(showType);
+//        setupSlide(showType);
 
 
     }
 
 
-    private void setupSlide(int showType) {
-        SlideModel model = SlideManager.getInstance().getCurrentShowmodel();
-        tv_time.setText(model.getShowTime());
-        senderTv.setText(model.getFromNickname());
-        receiverTv.setText(model.getToNickname());
-        tv_flower.setText(model.getAmount() + "朵花");
-
-
-        if (showType == 1) {//全国
-            tv_senderLocation.setText(model.getFromCity());
-            tv_receiverLocation.setText(model.getToCity());
-
-        }
-
-    }
+//    private void setupSlide(int showType) {
+//        SlideModel model = SlideManager.getInstance().getCurrentShowmodel();
+//        tv_time.setText(model.getShowTime());
+//        senderTv.setText(model.getFromNickname());
+//        receiverTv.setText(model.getToNickname());
+//        tv_flower.setText(model.getAmount() + "朵花");
+//
+//
+//        if (showType == 1) {//全国
+//            tv_senderLocation.setText(model.getFromCity());
+//            tv_receiverLocation.setText(model.getToCity());
+//
+//        }
+//
+//    }
 
 //
 //    private void collectSlideModel(SlideModel model, LinkedList<SlideModel> arr) {

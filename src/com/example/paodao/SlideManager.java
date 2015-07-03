@@ -11,9 +11,9 @@ import java.util.*;
  */
 public class SlideManager {
 
-    public static ArrayList<SlideModel> showCacheQueueArrForLocal;
-    public static ArrayList<SlideModel> showCacheQueueArrForGlobal;
-    public static ArrayList<SlideModel> listCacheQueueArr;
+    public volatile static ArrayList<SlideModel> showCacheQueueArrForLocal;
+    public volatile static ArrayList<SlideModel> showCacheQueueArrForGlobal;
+    public volatile static ArrayList<SlideModel> listCacheQueueArr;
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
@@ -22,7 +22,7 @@ public class SlideManager {
     private Context mContext;
 
 
-    private static SlideManager instance;
+    private static volatile SlideManager instance;
 
     private boolean isUpdating = false;
     private int readCount = 0;
@@ -125,16 +125,16 @@ public class SlideManager {
             listCacheQueueArr.add(0,model);
     }
 
-    public SlideModel getCurrentShowmodel() {
-        if (showCacheQueueArrForGlobal.size() != 0) {
-            return showCacheQueueArrForGlobal.get(0);
-        }
-        if (showCacheQueueArrForLocal.size() != 0) {
-
-            return showCacheQueueArrForLocal.get(0);
-        }
-        return listCacheQueueArr.get(listCacheQueueArr.size()-1);
-    }
+//    public SlideModel getCurrentShowmodel() {
+//        if (showCacheQueueArrForGlobal.size() != 0) {
+//            return showCacheQueueArrForGlobal.get(0);
+//        }
+//        if (showCacheQueueArrForLocal.size() != 0) {
+//
+//            return showCacheQueueArrForLocal.get(0);
+//        }
+//        return listCacheQueueArr.get(listCacheQueueArr.size()-1);
+//    }
 
 
 }
