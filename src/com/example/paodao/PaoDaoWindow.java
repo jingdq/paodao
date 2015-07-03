@@ -54,17 +54,10 @@ public class PaoDaoWindow implements View.OnClickListener {
     public enum MSGSTATE {
         AREA, LOCAL
     }
-
-
     private MSGSTATE currentState;
-
-
     private ViewGroup mParentView;
-
     private ListView historyListView;
-
     private FrameLayout.LayoutParams historyListViewParam;
-
     private static final int localOATime = 5000;
     private static final int areaOATime = 3000;
 
@@ -117,12 +110,27 @@ public class PaoDaoWindow implements View.OnClickListener {
         receiverTv.setText(model.getToNickname());
         tv_flower.setText(model.getAmount() + "朵花");
 
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+        ll_content.measure(w, h);
+        int height = ll_content.getMeasuredHeight();
+        int width = ll_content.getMeasuredWidth();
 
         if (model.getShowType() == SlideModel.AEAR_SHOW_TYPE.GLOBAL_SHOW) {//全国
             tv_senderLocation.setVisibility(View.VISIBLE);
             tv_receiverLocation.setVisibility(View.VISIBLE);
             tv_senderLocation.setText(model.getFromCity());
             tv_receiverLocation.setText(model.getToCity());
+
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ll_content.getLayoutParams();
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            ll_content.setLayoutParams(params);
+            ll_content.setGravity(Gravity.CENTER_HORIZONTAL);
+
+
+
+
 
             ObjectAnimator areaOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", ll_content.getPivotX(), -srceenWidth).setDuration(areaOATime);
             areaOA.setStartDelay(1000);
@@ -159,7 +167,7 @@ public class PaoDaoWindow implements View.OnClickListener {
             tv_senderLocation.setVisibility(View.GONE);
             tv_receiverLocation.setVisibility(View.GONE);
 
-            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(localOATime);
+            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -width).setDuration(localOATime);
             localOA.setRepeatCount(ValueAnimator.INFINITE);
             localOA.setRepeatMode(ValueAnimator.RESTART);
             localOA.start();
@@ -174,9 +182,13 @@ public class PaoDaoWindow implements View.OnClickListener {
 
         SlideModel model;
         if (showType == 0) {//本地
-            model = SlideManager.getInstance().showCacheQueueArrForLocal.get(SlideManager.getInstance().showCacheQueueArrForLocal.size()-1);
+            model = SlideManager.getInstance().showCacheQueueArrForLocal.get(SlideManager.getInstance().showCacheQueueArrForLocal.size() - 1);
         } else {//全国
             model = SlideManager.getInstance().showCacheQueueArrForGlobal.get(0);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ll_content.getLayoutParams();
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            ll_content.setLayoutParams(params);
+            ll_content.setGravity(Gravity.CENTER_HORIZONTAL);
         }
         tv_time.setText(model.getShowTime());
         senderTv.setText(model.getFromNickname());
@@ -184,27 +196,27 @@ public class PaoDaoWindow implements View.OnClickListener {
         tv_flower.setText(model.getAmount() + "朵花");
 
 
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+        ll_content.measure(w, h);
+        int height = ll_content.getMeasuredHeight();
+        int width = ll_content.getMeasuredWidth();
+
+
+
         if (showType == 0) {//本地
             tv_senderLocation.setVisibility(View.GONE);
             tv_receiverLocation.setVisibility(View.GONE);
-            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -srceenWidth).setDuration(localOATime);
+            ObjectAnimator localOA = ObjectAnimator.ofFloat(ll_content, "TranslationX", srceenWidth, -width).setDuration(localOATime);
             localOA.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
-//                    if (SlideManager.getInstance().showCacheQueueArrForLocal.size() != 0) {
-//
-//                        Log.e("jingdq", "showCacheQueueArrForLocal.size() : " + SlideManager.getInstance().showCacheQueueArrForLocal.size());
-//                        SlideModel model = SlideManager.getInstance().showCacheQueueArrForLocal.get(0);
-//                        SlideManager.getInstance().addNewHistoryBroadcast(model);
-//                        addOrUpdateHistoryView();
-//                        SlideManager.getInstance().showCacheQueueArrForLocal.remove(model);
-//                    }
-
-
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
+
 
                     if (SlideManager.getInstance().showCacheQueueArrForLocal.size() == 0) {
                         showHistoryDataView();
@@ -355,6 +367,7 @@ public class PaoDaoWindow implements View.OnClickListener {
             historyListViewParam.topMargin = ll_content == null ? 0 : ll_content.getBottom();
 //            historyListView.setVisibility(View.GONE);
             mParentView.addView(historyListView, historyListViewParam);
+//            ObjectAnimator.ofFloat(historyListView,"TranslationX",-srceenWidth,0).setDuration(1000).start();
         }
 
         SlideAdapter adapter = new SlideAdapter(mContext, SlideManager.getInstance().listCacheQueueArr);

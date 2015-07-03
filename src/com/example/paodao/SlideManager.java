@@ -24,6 +24,11 @@ public class SlideManager {
 
     private static SlideManager instance;
 
+    private boolean isUpdating = false;
+    private int readCount = 0;
+
+
+
     private SlideManager() {
         initSlideData();
     }
@@ -36,9 +41,15 @@ public class SlideManager {
 
     }
 
+    private  static synchronized void syncInit(){
+        if (instance == null){
+            instance = new SlideManager();
+        }
+    }
+
     public static SlideManager getInstance() {
         if (instance == null) {
-            instance = new SlideManager();
+            syncInit();
         }
         return instance;
     }

@@ -33,14 +33,16 @@
          android:ellipsize="marquee"
          android:focusable="true"
          android:focusableInTouchMode="true"
-         android:text="跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯" />-->
+         android:text="跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯" />
+          android:layout_gravity="center_horizontal"
+              android:gravity="center_horizontal"
+         -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
-              android:layout_width="400dp"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:background="#0000"
-              android:gravity="center_horizontal"
               android:id="@+id/ll_content">
 
     <TextView
