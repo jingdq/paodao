@@ -90,12 +90,12 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        ((MyApplication) getApplication()).addPaoDaoView();
+//        ((MyApplication) getApplication()).addPaoDaoView();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
 
 //        ((MyApplication) getApplication()).removePaoDaoView();
 
@@ -103,7 +103,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
-        ((MyApplication) getApplication()).removePaoDaoView();
+//        ((MyApplication) getApplication()).removePaoDaoView();
         super.onDestroy();
     }
 

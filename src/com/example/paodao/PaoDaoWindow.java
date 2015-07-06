@@ -71,6 +71,7 @@ public class PaoDaoWindow implements View.OnClickListener {
                     setUpAllSlide(showType);
                 } else if (showType == 0) {//本地
                     if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
+
                         setUpAllSlide(showType);
                     }
                 }
@@ -401,6 +402,7 @@ public class PaoDaoWindow implements View.OnClickListener {
         wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wl.gravity = Gravity.TOP;
 //        wl.type = 2002;
+
         wl.type = WindowManager.LayoutParams.TYPE_PHONE;
 //        wl.format=1;
         /**

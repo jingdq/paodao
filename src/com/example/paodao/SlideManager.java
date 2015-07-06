@@ -28,7 +28,6 @@ public class SlideManager {
     private int readCount = 0;
 
 
-
     private SlideManager() {
         initSlideData();
     }
@@ -41,8 +40,8 @@ public class SlideManager {
 
     }
 
-    private  static synchronized void syncInit(){
-        if (instance == null){
+    private static synchronized void syncInit() {
+        if (instance == null) {
             instance = new SlideManager();
         }
     }
@@ -59,13 +58,19 @@ public class SlideManager {
 
         SlideModel model = SlideModel.initWithSomeSample(SlideModel.AEAR_SHOW_TYPE.LOCAL_SHOW);
         this.showCacheQueueArrForLocal.add(model);
-        if (SlideManager.getInstance().showCacheQueueArrForGlobal.size()==0){
+        if (SlideManager.getInstance().showCacheQueueArrForGlobal.size() == 0) {
+
+//            while (showCacheQueueArrForLocal.size() >1) {
+//
+//                addNewHistoryBroadcast(showCacheQueueArrForGlobal.get(0));
+//                showCacheQueueArrForLocal.remove(0);
+//
+//            }
             Intent it = new Intent();
             it.setAction(Constant.Notification_refreshBroadcatView);
             it.putExtra("show_type", 0);
             mContext.sendBroadcast(it);
         }
-
 
 
     }
@@ -102,6 +107,8 @@ public class SlideManager {
 
 
         } else {
+
+
             Intent it = new Intent();
             it.setAction(Constant.Notification_refreshBroadcatView);
             it.putExtra("show_type", 1);
@@ -116,13 +123,13 @@ public class SlideManager {
 
     public void addNewHistoryBroadcast(SlideModel model) {
 
-        if (listCacheQueueArr.contains(model))return;
+        if (listCacheQueueArr.contains(model)) return;
 
-        while (listCacheQueueArr.size()>4){
-            listCacheQueueArr.remove(listCacheQueueArr.size()-1);
+        while (listCacheQueueArr.size() > 4) {
+            listCacheQueueArr.remove(listCacheQueueArr.size() - 1);
         }
 
-            listCacheQueueArr.add(0,model);
+        listCacheQueueArr.add(0, model);
     }
 
 //    public SlideModel getCurrentShowmodel() {
